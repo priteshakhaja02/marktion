@@ -22,7 +22,7 @@ export function ChatMenu({ onSelectMenu, children, ...dropdownProps }: ChatMenuP
         items: [
           {
             key: ChatMenuKey.InsertToContent,
-            label: '插入正文'
+            label: 'Insert'
           }
         ]
       }}
