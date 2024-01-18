@@ -89,7 +89,7 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
                 cursor: 'pointer',
                 marginRight: token.marginXS,
                 color: token.purple
-            } }), suffix: _jsx(Button, { loading: isLoading, style: { display: 'flex', alignItems: 'center', justifyContent: 'center' }, icon: _jsx(SendHorizonalIcon, { width: 16, height: 16 }), onClick: onSubmit }), placeholder: "OpenAI GPT-3 Playgroundddddddd", onChange: handleInputChange, onPressEnter: onSubmit, onCompositionStart: () => setIsComposingInput(true), onCompositionEnd: () => setIsComposingInput(false) }));
+            } }), suffix: _jsx(Button, { loading: isLoading, style: { display: 'flex', alignItems: 'center', justifyContent: 'center' }, icon: _jsx(SendHorizonalIcon, { width: 16, height: 16 }), onClick: onSubmit }), placeholder: "OpenAI GPT-3 Playground", onChange: handleInputChange, onPressEnter: onSubmit, onCompositionStart: () => setIsComposingInput(true), onCompositionEnd: () => setIsComposingInput(false) }));
     const renderInputMode = () => {
         return _jsx("div", { style: { padding: token.paddingXS }, children: inputEl });
     };
