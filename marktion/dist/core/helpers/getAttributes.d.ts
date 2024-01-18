@@ -1,0 +1,4 @@
+import { MarkType, NodeType } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
+export declare function getAttributes(state: EditorState, typeOrName: string | NodeType | MarkType): Record<string, any>;
+//# sourceMappingURL=getAttributes.d.ts.map

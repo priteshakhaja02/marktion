@@ -1,0 +1,1 @@
+{"version":3,"file":"createDocument.d.ts","sourceRoot":"","sources":["../../../src/core/helpers/createDocument.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,IAAI,eAAe,EAAE,YAAY,EAAE,MAAM,EAAE,MAAM,mBAAmB,CAAC;AAElF,OAAO,EAAE,OAAO,EAAE,MAAM,UAAU,CAAC;AAGnC,wBAAgB,cAAc,CAC5B,OAAO,EAAE,OAAO,EAChB,MAAM,EAAE,MAAM,EACd,YAAY,GAAE,YAAiB,GAC9B,eAAe,CAEjB"}

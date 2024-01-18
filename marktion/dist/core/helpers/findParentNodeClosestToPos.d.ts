@@ -1,0 +1,9 @@
+import { Node as ProseMirrorNode, ResolvedPos } from 'prosemirror-model';
+import { Predicate } from '../types';
+export declare function findParentNodeClosestToPos($pos: ResolvedPos, predicate: Predicate): {
+    pos: number;
+    start: number;
+    depth: number;
+    node: ProseMirrorNode;
+} | undefined;
+//# sourceMappingURL=findParentNodeClosestToPos.d.ts.map

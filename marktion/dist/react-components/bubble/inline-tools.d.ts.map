@@ -1,0 +1,1 @@
+{"version":3,"file":"inline-tools.d.ts","sourceRoot":"","sources":["../../../src/react-components/bubble/inline-tools.tsx"],"names":[],"mappings":";AAMA,MAAM,WAAW,cAAc;IAC7B,IAAI,EAAE,MAAM,CAAC;IACb,QAAQ,EAAE,MAAM,OAAO,CAAC;IACxB,OAAO,EAAE,MAAM,IAAI,CAAC;IACpB,IAAI,EAAE,KAAK,CAAC,SAAS,CAAC;CACvB;AAED,wBAAgB,WAAW,CAAC,KAAK,EAAE;IAAE,MAAM,CAAC,EAAE,OAAO,CAAA;CAAE,2CAkEtD"}

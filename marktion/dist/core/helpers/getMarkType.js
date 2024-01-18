@@ -1,0 +1,9 @@
+export function getMarkType(nameOrType, schema) {
+    if (typeof nameOrType === 'string') {
+        if (!schema.marks[nameOrType]) {
+            throw Error(`There is no mark type named '${nameOrType}'. Maybe you forgot to add the extension?`);
+        }
+        return schema.marks[nameOrType];
+    }
+    return nameOrType;
+}

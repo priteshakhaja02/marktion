@@ -1,0 +1,1 @@
+{"version":3,"file":"view-codemirror.d.ts","sourceRoot":"","sources":["../../../src/components/codeblock/view-codemirror.ts"],"names":[],"mappings":"AAMA,OAAO,EAEL,UAAU,IAAI,oBAAoB,EAGnC,MAAM,kBAAkB,CAAC;AAE1B,MAAM,MAAM,qBAAqB,GAAG;IAClC,EAAE,EAAE,oBAAoB,CAAC;IAEzB,QAAQ,EAAE,OAAO,CAAC;CACnB,CAAC;AAGF,wBAAgB,kBAAkB,SAAK"}

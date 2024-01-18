@@ -1,0 +1,19 @@
+import { MarkType } from 'prosemirror-model';
+import { RawCommands } from '../types.js';
+declare global {
+    interface Commands<ReturnType> {
+        unsetMark: {
+            /**
+             * Remove all marks in the current selection.
+             */
+            unsetMark: (typeOrName: string | MarkType, options?: {
+                /**
+                 * Removes the mark even across the current selection. Defaults to `false`.
+                 */
+                extendEmptyMarkRange?: boolean;
+            }) => ReturnType;
+        };
+    }
+}
+export declare const unsetMark: RawCommands['unsetMark'];
+//# sourceMappingURL=unsetMark.d.ts.map

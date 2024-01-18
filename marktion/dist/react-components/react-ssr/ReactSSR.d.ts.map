@@ -1,0 +1,1 @@
+{"version":3,"file":"ReactSSR.d.ts","sourceRoot":"","sources":["../../../src/react-components/react-ssr/ReactSSR.tsx"],"names":[],"mappings":";AAGA,MAAM,MAAM,aAAa,GAAG,KAAK,CAAC,cAAc,CAAC,cAAc,CAAC,GAAG;IACjE,OAAO,EAAE,MAAM,CAAC;IAChB,UAAU,CAAC,EAAE,KAAK,CAAC,aAAa,CAAC;CAClC,CAAC;AAEF,wBAAgB,QAAQ,CAAC,EAAE,UAAU,EAAE,OAAO,EAAE,GAAG,YAAY,EAAE,EAAE,aAAa,2CAgB/E"}

@@ -1,0 +1,17 @@
+import { ParseOptions } from 'prosemirror-model';
+import { Content, RawCommands } from '../types';
+declare global {
+    interface Commands<ReturnType> {
+        insertContent: {
+            /**
+             * Insert a node or string of HTML at the current position.
+             */
+            insertContent: (value: Content, options?: {
+                parseOptions?: ParseOptions;
+                updateSelection?: boolean;
+            }) => ReturnType;
+        };
+    }
+}
+export declare const insertContent: RawCommands['insertContent'];
+//# sourceMappingURL=insertContent.d.ts.map

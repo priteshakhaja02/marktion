@@ -1,0 +1,5 @@
+import { Node as ProseMirrorNode } from 'prosemirror-model';
+import { Selection } from 'prosemirror-state';
+import { FocusPosition } from '../types';
+export declare function resolveFocusPosition(doc: ProseMirrorNode, position?: FocusPosition): Selection | null;
+//# sourceMappingURL=resolveFocusPosition.d.ts.map
