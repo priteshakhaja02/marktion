@@ -18,5 +18,7 @@ export interface CreateChatCompletionDeltaResponse {
 }
 export type GptConfig = Partial<UseChatOptions & {
     apiKey: string;
+    token: string;
+    baseUrl: string;
 }>;
 //# sourceMappingURL=type.d.ts.map
