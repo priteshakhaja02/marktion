@@ -22,7 +22,7 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
     const pm = usePMRenderer();
     console.log("getCOnfig", buttonRef)
     const { messages, input, isLoading, handleInputChange, handleSubmit, setMessages, stop } = useChat({
-        api: gptConfig.baseUrl + '?call='+ buttonRef.current,
+        // api: gptConfig.baseUrl + '?call='+ buttonRef.current,
         initialMessages: defaultInitialMessages,
         body: {
             temperature: 0.7,
