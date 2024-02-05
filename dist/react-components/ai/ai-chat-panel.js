@@ -31,7 +31,7 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
     // console.log("gptConfig",gptConfig)
 
     const { messages, input, isLoading, handleInputChange, handleSubmit, setMessages, stop } = useChat({
-        api: gptConfig.baseUrl + '?type='+ key,
+        api: gptConfig.baseUrl + 'editor-chat?initiative_id='+ gptConfig.initid + '&type='+ key,
         initialMessages: defaultInitialMessages,
         headers: {
             Authorization: `Bearer ${gptConfig?.token || ''}`
