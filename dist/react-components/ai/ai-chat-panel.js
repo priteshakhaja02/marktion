@@ -137,9 +137,10 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
             placeholder: "OpenAI GPT-3 Playground", 
             onChange: handleInputChange, 
             onKeyDown: (e)=>{
-                if(e.metaKey && e.shiftKey && e.code == "Enter"){
+                const isCmdKey =  e.ctrlKey || (e?.metaKey && navigator?.platform?.toUpperCase()?.indexOf("MAC") >= 0);
+                if(isCmdKey && e.shiftKey && e.code == "Enter"){
                     onSubmit(e,LARGE_CONTEXT)
-                }else if(e.metaKey && e.code == "Enter"){
+                }else if(isCmdKey && e.code == "Enter"){
                     onSubmit(e,SMALL_CONTEXT)
                 }else if(e.code == "Enter") {
                     onSubmit(e,NO_CONTEXT)
