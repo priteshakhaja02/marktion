@@ -117,54 +117,23 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
                 marginRight: token.marginXS,
                 color: token.purple
             } }),
-            //  suffix: (
-            //     // Added a Fragment to contain both buttons
-            //     _jsxs(_Fragment, {
-            //         children: [
-            //             // First Button (SparklesIcon)
-            //             _jsx(Button, {
-            //                 children: "OpenAI",
-            //                 id: APICALL_KEY_OPENAI,
-            //                 loading: isLoading,
-            //                 style: {
-            //                     display: 'flex',
-            //                     alignItems: 'center',
-            //                     justifyContent: 'center',
-            //                     marginRight: '8px' // Adjust margin as needed
-            //                 },
-            //                 icon: _jsx(SparklesIcon, {
-            //                     width: 16,
-            //                     height: 16
-            //                 }),
-            //                 onClick: (e)=> {
-            //                     buttonRef.current = APICALL_KEY_OPENAI
-            //                     setIsOpenAiCall(APICALL_KEY_OPENAI);
-            //                     onSubmit(e);
-            //                 }
-            //             }),
-            //             // Second Button (SendHorizonalIcon)
-            //             _jsx(Button, {
-            //                 children: "File",
-            //                 loading: isLoading,
-            //                 id: APICALL_KEY_FILE,
-            //                 style: {
-            //                     display: 'flex',
-            //                     alignItems: 'center',
-            //                     justifyContent: 'center'
-            //                 },
-            //                 icon: _jsx(SendHorizonalIcon, {
-            //                     width: 16,
-            //                     height: 16
-            //                 }),
-            //                 onClick: (e)=> {
-            //                     buttonRef.current = APICALL_KEY_FILE
-            //                     setIsOpenAiCall(APICALL_KEY_FILE);
-            //                     onSubmit(e);
-            //                 }
-            //             })
-            //         ]
-            //     })
-            // ), 
+            suffix: (
+                // Added a Fragment to contain both buttons
+                _jsxs(_Fragment, {
+                    children: [
+                        // Loader Button
+                        _jsx(Button, {
+                            loading: isLoading,
+                            style: {
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                border : '0px solid transparent'
+                            },
+                        })
+                    ]
+                })
+            ), 
             placeholder: "OpenAI GPT-3 Playground", 
             onChange: handleInputChange, 
             onKeyDown: (e)=>{
