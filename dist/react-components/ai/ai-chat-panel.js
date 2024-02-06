@@ -134,7 +134,7 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
                     ]
                 })
             ), 
-            placeholder: "OpenAI GPT-3 Playground", 
+            placeholder: "Ask AI to write anything", 
             onChange: handleInputChange, 
             onKeyDown: (e)=>{
                 const isCmdKey =  e.ctrlKey || (e?.metaKey && navigator?.platform?.toUpperCase()?.indexOf("MAC") >= 0);
