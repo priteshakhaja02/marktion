@@ -31,5 +31,8 @@ export function ChatMessages({ messages }) {
             } }) }));
 }
 function renderContent(str) {
+     try {
+        str = JSON?.parse(str)?.content || str;
+      } catch (error) {}
     return (_jsx(ReactSSR, { content: str, className: "plugin-ai-inline-message-content", "data-scaling": "90%", innerStyle: { fontSize: 14 } }));
 }
