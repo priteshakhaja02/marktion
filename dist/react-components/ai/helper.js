@@ -11,7 +11,7 @@ export function messagesToMarkdown(messages) {
         if (message.role === 'assistant') {
             return message.content;
         }
-        return `**Q: ${message.content}**`;
+        // return `**Q: ${message.content}**`;
     })
         .join('\n\n');
 }
