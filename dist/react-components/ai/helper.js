@@ -8,6 +8,9 @@ export function insertMessages(pm, messages, selection) {
 export function messagesToMarkdown(messages) {
     return messages
         .map(message => {
+         try {
+            message.content = JSON?.parse(message.content)?.content || message.content;
+          } catch (error) {}
         if (message.role === 'assistant') {
             return message.content;
         }
