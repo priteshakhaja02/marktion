@@ -76,7 +76,7 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
         if (!isLoading) {
             inputRef.current?.focus();
               popoverProps.onOpenChange?.(false);
-            // insertMessages(pm, messages, selection);
+            insertMessages(pm, messages, selection);
         }
     }, [isLoading]);
     useEffect(() => {
