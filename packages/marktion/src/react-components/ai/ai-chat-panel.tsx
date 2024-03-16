@@ -1,207 +1,174 @@
-import { useChat, Message } from 'ai/react';
-import { Selection } from 'prosemirror-state';
+import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+import { useChat } from 'ai/react';
 import { SparklesIcon, SendHorizonalIcon } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { PopoverProps, Popover, Input, InputRef, Button, theme } from 'antd';
-
-import { DEBUG_MESSAGE } from './DEBUG_utils';
+import { Popover, Input, Button, theme } from 'antd';
 import { usePMRenderer } from '../../react-hooks';
 import { ChatMessages } from './ai-chat-messages';
-import { ChatMenu, ChatMenuKey, ChatMenuProps } from './ai-chat-menu';
+import { ChatMenu, ChatMenuKey } from './ai-chat-menu';
 import { insertMessages } from './helper';
-import { GptConfig } from './type';
-
-export type AIChatPanelProps = PopoverProps & {
-  gptConfig?: GptConfig;
-  selection: Selection | null;
-};
-
+import getConfig from "next/config";
+import { updateLastMessage } from "marktion/dist/react-components/ai/helper";
+// const APICALL_KEY_OPENAI = 'openai'
+// const APICALL_KEY_FILE = 'file'
 // const defaultInitialMessages = DEBUG_MESSAGE;
-const defaultInitialMessages: Message[] = [];
-
-export function AIChatPanel({ children, gptConfig, selection, ...popoverProps }: AIChatPanelProps) {
-  const inputRef = useRef<InputRef>(null);
-  const [chatMenuOpen, setChatMenuOpen] = useState(false);
-  const chatMenuWrapperRef = useRef<HTMLDivElement>(null);
-  const { token } = theme.useToken();
-  const pm = usePMRenderer();
-
-  const { messages, input, isLoading, handleInputChange, handleSubmit, setMessages, stop } =
-    useChat({
-      initialMessages: defaultInitialMessages,
-      body: {
-        temperature: 0.7,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-        stream: true,
-        n: 1,
-        model: 'gpt-3.5-turbo'
-      },
-      headers: {
-        Authorization: `Bearer ${gptConfig?.apiKey || ''}`
-      },
-      ...gptConfig
+const NO_CONTEXT = 'no-context'
+const SMALL_CONTEXT = 'small-context'
+const LARGE_CONTEXT = 'large-context'
+const defaultInitialMessages = [];
+export function AIChatPanel({ children, gptConfig, selection, ...popoverProps }) {
+    const inputRef = useRef(null);
+    const [chatMenuOpen, setChatMenuOpen] = useState(false);
+    const [inputEvent, setInputEvent] = useState({});
+    const [key, setKey] = useState(NO_CONTEXT);
+    const chatMenuWrapperRef = useRef(null);
+    const { token } = theme.useToken();
+    const pm = usePMRenderer();
+    useEffect(() => {
+        const selection = window.getSelection();
+        function handleMouseUp() {
+            const selectedText = selection.toString().trim();
+            if (selectedText && !popoverProps.open) {
+              setSelectedText(selectedText);
+            }
+        }
+        window.addEventListener("mouseup", handleMouseUp);
+        window.addEventListener("keyup", handleMouseUp);
+        return () => {
+          window.removeEventListener("mouseup", handleMouseUp);
+          window.removeEventListener("keyup", handleMouseUp);
+        };
+        
+      }, [popoverProps.open]);
+    const { messages, input, isLoading, handleInputChange, handleSubmit, setMessages, stop } = useChat({
+        api: gptConfig.baseUrl + 'chat/editor-chat?initiative_id='+ gptConfig.initid + '&type='+ key,
+        initialMessages: defaultInitialMessages,
+        headers: {
+            Authorization: `Bearer ${gptConfig?.token || ''}`
+        },
+        ...gptConfig
     });
-
-  const [isComposingInput, setIsComposingInput] = useState(false);
-
-  useEffect(() => {
-    if (!popoverProps.open) {
-      setMessages(defaultInitialMessages);
-      stop();
-    } else {
-      requestAnimationFrame(() => {
-        inputRef.current?.focus();
-      });
-    }
-  }, [popoverProps.open]);
-
-  useEffect(() => {
-    if (!popoverProps.open) {
-      setChatMenuOpen(false);
-      return;
-    }
-
-    if (messages.length >= 2) {
-      setChatMenuOpen(true);
-    }
-  }, [messages.length >= 2, popoverProps.open, isLoading]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      inputRef.current?.focus();
-    }
-  }, [isLoading]);
-
-  useEffect(() => {
-    if (!popoverProps.open) {
-      return;
-    }
-
-    const onKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        popoverProps.onOpenChange?.(false);
-        pm.focus();
-      }
+    const [selectedText, setSelectedText] = useState("");
+    
+    const [isComposingInput, setIsComposingInput] = useState(false);
+    useEffect(() => {
+        if (!popoverProps.open) {
+            setMessages(defaultInitialMessages);
+            setSelectedText("")
+            stop();
+        }
+        else {
+            requestAnimationFrame(() => {
+                inputRef.current?.focus();
+            });
+        }
+    }, [popoverProps.open]);
+    useEffect(() => {
+        if (!popoverProps.open) {
+            setChatMenuOpen(false);
+            setSelectedText("");
+            return;
+        }
+        if (messages.length >= 2) {
+            setChatMenuOpen(true);
+        }
+    }, [messages.length >= 2, popoverProps.open, isLoading]);
+    useEffect(() => {
+        if (!isLoading) {
+            inputRef.current?.focus();
+              popoverProps.onOpenChange?.(false);
+            insertMessages(pm, messages, selection);
+        }
+    }, [isLoading]);
+   
+    
+    useEffect(() => {
+        if (!popoverProps.open) {
+            return;
+        }
+        const onKeydown = (e) => {
+            if (e.key === 'Escape') {
+                popoverProps.onOpenChange?.(false);
+                setSelectedText("");
+                pm.focus();
+            }
+        };
+        window.addEventListener('keydown', onKeydown);
+        return () => {
+            window.removeEventListener('keydown', onKeydown);
+        };
+    }, [popoverProps.onOpenChange, popoverProps.open , selectedText]);
+    const onSubmit = (e,key) => {
+        if (isComposingInput)
+            return;
+        // if (e?.shiftKey)
+        //     return;
+        setKey(key)
+        setInputEvent(e)
     };
-
-    window.addEventListener('keydown', onKeydown);
-    return () => {
-      window.removeEventListener('keydown', onKeydown);
+    useEffect(()=>{
+        if (Object.keys(inputEvent)?.length > 0) {
+          handleSubmit(inputEvent);
+        }
+    },[inputEvent])
+    const inputEl = (_jsx(Input, { style: { boxShadow: '0px' },
+            bordered: false,
+            value: isLoading ? "Generating..." :selectedText,
+            disabled: isLoading,
+            ref: inputRef,
+            prefix: isLoading ? "" : _jsx(SparklesIcon, { onClick: () => setChatMenuOpen(!chatMenuOpen), style: {
+                cursor: 'pointer',
+                color:"#FBBF24",
+                marginRight: token.marginXS,
+                color: token.purple
+            } }),
+            suffix: (
+                // Added a Fragment to contain both buttons
+                _jsxs(_Fragment, {
+                    children: [
+                        // Loader Button
+                        _jsx(Button, {
+                            loading: isLoading,
+                            style: {
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                border : '0px solid transparent',
+                                boxShadow: '0px' // Adding shadow none
+                            },
+                        })
+                    ]
+                })
+            ), 
+            placeholder:isLoading ? "Generate...." : "Ask AI to write anything", 
+            disabled : isLoading,
+            onChange:(e) => {handleInputChange(e);setSelectedText(e.target.value)}, 
+            onKeyDown: (e)=>{
+                const isCmdKey =  e.ctrlKey || (e?.metaKey && navigator?.platform?.toUpperCase()?.indexOf("MAC") >= 0);
+                if(isCmdKey && e.shiftKey && e.code == "Enter"){
+                    onSubmit(e,LARGE_CONTEXT)
+                }else if(isCmdKey && e.code == "Enter"){
+                    onSubmit(e,SMALL_CONTEXT)
+                }else if(e.code == "Enter") {
+                    onSubmit(e,NO_CONTEXT)
+                }
+            }, 
+            onCompositionStart: () => setIsComposingInput(true), 
+            onCompositionEnd: () => setIsComposingInput(false) 
+        }));
+    const renderInputMode = () => {
+        return _jsx("div", { style: { padding: token.paddingXS }, children: inputEl });
     };
-  }, [popoverProps.onOpenChange, popoverProps.open]);
-
-  const onSubmit = (e?: React.KeyboardEvent | React.MouseEvent) => {
-    if (isComposingInput) return;
-    if (e?.shiftKey) return;
-
-    handleSubmit(e as any);
-  };
-
-  const onSelectMenu: ChatMenuProps['onSelectMenu'] = useCallback(
-    key => {
-      if (key === ChatMenuKey.InsertToContent) {
-        popoverProps.onOpenChange?.(false);
-        insertMessages(pm, messages, selection);
-      }
-    },
-    [pm, messages]
-  );
-
-  const inputEl = (
-    <Input
-      style={{ boxShadow: 'none' }}
-      bordered={false}
-      value={input}
-      disabled={isLoading}
-      ref={inputRef}
-      prefix={
-        <SparklesIcon
-          onClick={() => setChatMenuOpen(!chatMenuOpen)}
-          style={{
-            cursor: 'pointer',
-            marginRight: token.marginXS,
-            color: token.purple
-          }}
-        />
-      }
-      suffix={
-        <Button
-          loading={isLoading}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          icon={<SendHorizonalIcon width={16} height={16} />}
-          onClick={onSubmit}
-        />
-      }
-      placeholder="OpenAI GPT-3 Playground"
-      onChange={handleInputChange}
-      onPressEnter={onSubmit}
-      onCompositionStart={() => setIsComposingInput(true)}
-      onCompositionEnd={() => setIsComposingInput(false)}
-    />
-  );
-
-  const renderInputMode = () => {
-    return <div style={{ padding: token.paddingXS }}>{inputEl}</div>;
-  };
-
-  const renderChatMode = () => {
-    return (
-      <>
-        <div style={{ borderBottom: `1px solid ${token.colorBorderSecondary}` }}>
-          <ChatMessages messages={messages} />
-        </div>
-        <div ref={chatMenuWrapperRef} style={{ position: 'relative' }}>
-          <ChatMenu
-            open={chatMenuOpen}
-            onSelectMenu={onSelectMenu}
-            getPopupContainer={() => chatMenuWrapperRef.current || document.body}
-          >
-            <div style={{ padding: token.paddingXS }}>{inputEl}</div>
-          </ChatMenu>
-        </div>
-      </>
-    );
-  };
-
-  const content = (
-    <div
-      style={{
-        width: 600
-      }}
-      onWheel={e => {
-        e.stopPropagation();
-      }}
-    >
-      {messages.length > 0 ? renderChatMode() : renderInputMode()}
-    </div>
-  );
-
-  return (
-    <Popover
-      placement="bottomLeft"
-      trigger="click"
-      arrow={false}
-      overlayInnerStyle={{
-        padding: 0
-      }}
-      {...popoverProps}
-      content={content}
-    >
-      {children}
-    </Popover>
-  );
-}
-
-function messagesToMarkdown(messages: Message[]) {
-  return messages
-    .map(message => {
-      if (message.role === 'assistant') {
-        return message.content;
-      }
-
-      return `**Q: ${message.content}**`;
-    })
-    .join('\n\n');
+    const renderChatMode = () => {
+        return (_jsxs(_Fragment, { children: [_jsx("div", { style: { borderBottom: `0px solid ${token.colorBorderSecondary}` } }), _jsx("div", { ref: chatMenuWrapperRef, style: { position: 'relative' }, children: _jsx(ChatMenu, {children: _jsx("div", { children: inputEl }) }) })] }));
+    };
+    const content = (_jsx("div", { style: {
+            width: isLoading ? 187 : 600
+        }, onWheel: e => {
+            e.stopPropagation();
+        }, children: messages.length > 0 ? renderChatMode() : renderInputMode() }));
+    return (_jsx(Popover, { placement: "bottomLeft", trigger:isLoading ? "" :"click", arrow: false, overlayInnerStyle: {
+            padding: 0,
+ boxShadow : isLoading ? "none" :""
+        }, ...popoverProps, content: content, children: children }));
 }
