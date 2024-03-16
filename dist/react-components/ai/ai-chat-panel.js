@@ -19,7 +19,7 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
     const inputRef = useRef(null);
     const [chatMenuOpen, setChatMenuOpen] = useState(false);
     const [inputEvent, setInputEvent] = useState({});
-    const [key, setKey] = useState(NO_CONTEXT);a
+    const [key, setKey] = useState(NO_CONTEXT);
     const chatMenuWrapperRef = useRef(null);
     const { token } = theme.useToken();
     const pm = usePMRenderer();
