@@ -140,11 +140,11 @@ export function AIChatPanel({ children, gptConfig, selection, ...popoverProps })
                 const isCmdKey =  e.ctrlKey || (e?.metaKey && navigator?.platform?.toUpperCase()?.indexOf("MAC") >= 0);
                 const isEnter =  e.code == "Enter" || e.code == "NumpadEnter";
                 if(isCmdKey && e.shiftKey && isEnter){
-                    onSubmit(e,LARGE_CONTEXT)
+                    onSubmit(e,NO_CONTEXT)
                 }else if(isCmdKey && isEnter){
                     onSubmit(e,SMALL_CONTEXT)
                 }else if(isEnter) {
-                    onSubmit(e,NO_CONTEXT)
+                    onSubmit(e,LARGE_CONTEXT)
                 }
             }, 
             onCompositionStart: () => setIsComposingInput(true), 
